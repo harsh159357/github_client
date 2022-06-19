@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">GitHub Client</string>
+    <string name="app_name">Pull Requests</string>
+    <string name="repositories">Repositories</string>
+    <string name="no_repos_found">No Repos Found</string>
 </resources>
