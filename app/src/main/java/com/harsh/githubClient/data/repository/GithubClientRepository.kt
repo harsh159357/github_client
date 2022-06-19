@@ -38,13 +38,13 @@ class GithubClientRepository(private val apiService: ApiService) : BaseRepositor
         return result
     }
 
-    suspend fun searchRepos(searchQuery: String): Result<SearchRepository> {
-        var result: Result<SearchRepository> = handleSuccess(SearchRepository())
+    suspend fun searchRepos(searchQuery: String): Result<ArrayList<Repository>> {
+        var result: Result<ArrayList<Repository>> = handleSuccess(arrayListOf())
         try {
             val response = apiService.searchRepos(searchQuery = searchQuery)
             response.let {
                 it.body()?.let { repos ->
-                    result = handleSuccess(repos)
+                    result = handleSuccess(repos.items)
                 }
                 it.errorBody()?.let { responseErrorBody ->
                     if (responseErrorBody is HttpException) {

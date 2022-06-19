@@ -32,7 +32,24 @@ class ReposViewModel(var repository: GithubClientRepository) : ViewModel() {
         }
     }
 
-    fun reloadItems() {
+    private fun searchRepos(searchQuery: String) {
+        _loading.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.searchRepos(searchQuery)
+            viewModelScope.launch(Dispatchers.Main) {
+                repos.value = result.extractData
+                _loading.value = false
+            }
+        }
+    }
+
+    fun searchAction(searchQuery:String) {
+        repos.value = arrayListOf()
+        searchRepos(searchQuery)
+    }
+
+    fun refresh() {
+        repos.value = arrayListOf()
         loadRepos()
     }
 }

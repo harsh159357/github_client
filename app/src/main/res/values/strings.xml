@@ -2,4 +2,6 @@
     <string name="app_name">Pull Requests</string>
     <string name="repositories">Repositories</string>
     <string name="no_repos_found">No Repos Found</string>
+    <string name="refresh">Refresh</string>
+    <string name="search">Search</string>
 </resources>
