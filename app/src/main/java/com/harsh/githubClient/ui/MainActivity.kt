@@ -14,6 +14,7 @@ import com.harsh.githubClient.R
 import com.harsh.githubClient.data.model.Repository
 import com.harsh.githubClient.databinding.ActivityMainBinding
 import com.harsh.githubClient.ui.adapter.ReposAdapter
+import com.harsh.githubClient.util.GitHubClientUtil
 import com.harsh.githubClient.util.hide
 import com.harsh.githubClient.util.show
 import com.harsh.githubClient.util.toast
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), ReposAdapter.RepoListener {
             }
             reposViewModel.loading.observe(this@MainActivity) {
                 it.let {
-                    if(it) {
+                    if (it) {
                         binding.progressBar.show()
                     } else {
                         binding.progressBar.hide()
@@ -78,8 +79,8 @@ class MainActivity : AppCompatActivity(), ReposAdapter.RepoListener {
         inflater.inflate(R.menu.menu, menu)
         val searchViewItem: MenuItem = menu.findItem(R.id.action_search)
         binding.toolBar.setOnMenuItemClickListener {
-            when(it.itemId) {
-                R.id.action_refresh-> {
+            when (it.itemId) {
+                R.id.action_refresh -> {
                     "Loading Harsh Sharma Repos".toast(this@MainActivity)
                     reposViewModel.refresh()
                     true
@@ -113,6 +114,8 @@ class MainActivity : AppCompatActivity(), ReposAdapter.RepoListener {
     }
 
     override fun onRepoClick(repository: Repository, position: Int) {
-        "Clicked On ${repository.name}".toast(this)
+        startActivity(PullRequestActivity.createIntent(this@MainActivity).apply {
+            putExtra(GitHubClientUtil.REPO_PATH, repository.fullName)
+        })
     }
 }

@@ -26,6 +26,7 @@ fun ImageView.bindUrl(imageUrl: String?) {
             .transition(DrawableTransitionOptions.withCrossFade(factory))
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .placeholder(R.drawable.ic_placeholder)
+            .circleCrop()
             .apply(requestOptions)
             .into(this)
     }

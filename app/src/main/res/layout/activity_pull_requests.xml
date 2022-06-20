@@ -7,11 +7,11 @@
 
         <variable
             name="adapter"
-            type="com.harsh.githubClient.ui.adapter.ReposAdapter" />
+            type="com.harsh.githubClient.ui.adapter.PullRequestsAdapter" />
 
         <variable
             name="viewModel"
-            type="com.harsh.githubClient.viewmodel.ReposViewModel" />
+            type="com.harsh.githubClient.viewmodel.PullRequestViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,9 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/repositories" />
+            app:title="@string/app_name" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -64,13 +63,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/no_repos_found"
+                android:text="@string/no_prs_found"
                 android:textSize="@dimen/sp22" />
 
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/repos"
+            android:id="@+id/pull_requests"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp0"
             android:scrollbars="vertical"

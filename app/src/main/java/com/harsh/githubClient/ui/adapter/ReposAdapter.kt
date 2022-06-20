@@ -34,7 +34,6 @@ class ReposAdapter() : RecyclerView.Adapter<ReposAdapter.ItemViewHolder>() {
         holder.binding.repoParent.setOnClickListener {
             repoListener?.onRepoClick(currentItem, position)
         }
-//        holder.binding.executePendingBindings()
     }
 
     override fun getItemCount(): Int {

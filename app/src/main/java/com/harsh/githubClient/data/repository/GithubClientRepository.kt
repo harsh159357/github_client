@@ -1,8 +1,9 @@
 package com.harsh.githubClient.data.repository
 
 import com.harsh.githubClient.data.api.ApiService
+import com.harsh.githubClient.data.model.PullRequest
 import com.harsh.githubClient.data.model.Repository
-import com.harsh.githubClient.data.model.SearchRepository
+import com.harsh.githubClient.util.GitHubClientUtil
 import com.harsh.githubClient.util.Result
 import retrofit2.HttpException
 import timber.log.Timber
@@ -31,9 +32,9 @@ class GithubClientRepository(private val apiService: ApiService) : BaseRepositor
                     } else result = handleException(GENERAL_ERROR_CODE)
                 }
             }
-        } catch (error: HttpException) {
-            Timber.e("$TAG - Error: ${error.message}")
-            return handleException(error.code())
+        } catch (error: Exception) {
+            Timber.e("$TAG - Error: ${error.message} \n ${error.stackTrace}")
+            return handleException(GENERAL_ERROR_CODE)
         }
         return result
     }
@@ -54,9 +55,38 @@ class GithubClientRepository(private val apiService: ApiService) : BaseRepositor
                     } else result = handleException(GENERAL_ERROR_CODE)
                 }
             }
-        } catch (error: HttpException) {
-            Timber.e("$TAG - Error: ${error.message}")
-            return handleException(error.code())
+        } catch (error: Exception) {
+            Timber.e("$TAG - Error: ${error.message} \n ${error.stackTrace}")
+            return handleException(GENERAL_ERROR_CODE)
+        }
+        return result
+    }
+
+    suspend fun getPullRequests(path: String): Result<ArrayList<PullRequest>> {
+        var result: Result<ArrayList<PullRequest>> = handleSuccess(arrayListOf())
+        try {
+            val response = apiService.getPullRequestsForRepo(customPath = path)
+            response.let {
+                it.body()?.let { pullRequests ->
+                    pullRequests.forEach { pr ->
+                        pr.clientCreatedAt =
+                            GitHubClientUtil.getFormattedDate(pr.createdAt, "Created")
+                        pr.clientClosedAt = GitHubClientUtil.getFormattedDate(pr.closedAt, "Closed")
+                    }
+
+                    result = handleSuccess(pullRequests)
+                }
+                it.errorBody()?.let { responseErrorBody ->
+                    if (responseErrorBody is HttpException) {
+                        responseErrorBody.response()?.code()?.let { errorCode ->
+                            result = handleException(errorCode)
+                        }
+                    } else result = handleException(GENERAL_ERROR_CODE)
+                }
+            }
+        } catch (error: Exception) {
+            Timber.e("$TAG - Error: ${error.message} \n ${error.stackTrace}")
+            return handleException(GENERAL_ERROR_CODE)
         }
         return result
     }

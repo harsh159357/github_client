@@ -43,7 +43,7 @@ class ReposViewModel(var repository: GithubClientRepository) : ViewModel() {
         }
     }
 
-    fun searchAction(searchQuery:String) {
+    fun searchAction(searchQuery: String) {
         repos.value = arrayListOf()
         searchRepos(searchQuery)
     }

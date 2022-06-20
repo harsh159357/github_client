@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="prItem"
+            type="com.harsh.githubClient.data.model.PullRequest" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/pr_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:padding="@dimen/dp16">
+
+        <com.harsh.githubClient.ui.widget.FixedSizeImageView
+            android:id="@+id/iv_gravatar"
+            setImageUrl="@{prItem.user.avatarUrl}"
+            android:layout_width="@dimen/dp42"
+            android:layout_height="@dimen/dp42"
+            android:layout_marginTop="@dimen/dp8"
+            android:layout_marginEnd="@dimen/dp16"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            tools:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/tv_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/dp16"
+            android:layout_toEndOf="@+id/iv_gravatar"
+            android:text="@{prItem.user.login}"
+            android:textAppearance="@style/Text.Small" />
+
+        <TextView
+            android:id="@+id/tv_pr_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_user_id"
+            android:layout_toEndOf="@id/tv_user_id"
+            android:text='@{"# " + prItem.number.toString()}'
+            android:textAppearance="@style/Text.Small" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_pr_no"
+            android:layout_toEndOf="@id/iv_gravatar"
+            android:text="@{prItem.title}"
+            android:textAppearance="@style/Text.Title" />
+
+        <TextView
+            android:id="@+id/tv_pr_dates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_toEndOf="@id/iv_gravatar"
+            android:text='@{"Created At -" + prItem.clientCreatedAt + "\nClosed At -" + prItem.clientClosedAt}'
+            android:textAppearance="@style/Text.Small" />
+    </RelativeLayout>
+</layout>
