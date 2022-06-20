@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harsh.githubClient.data.model.PullRequest
+import com.harsh.githubClient.data.repository.BaseRepository
 import com.harsh.githubClient.data.repository.GithubClientRepository
+import com.harsh.githubClient.util.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -15,7 +17,7 @@ class PullRequestViewModel(var repository: GithubClientRepository) : ViewModel()
     val loading: LiveData<Boolean>
         get() = _loading
 
-    var pullRequests: MutableLiveData<ArrayList<PullRequest>> = MutableLiveData()
+    var pullRequests: MutableLiveData<Result<ArrayList<PullRequest>>> = MutableLiveData()
 
     init {
         _loading.value = false
@@ -26,7 +28,19 @@ class PullRequestViewModel(var repository: GithubClientRepository) : ViewModel()
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getPullRequests(path)
             viewModelScope.launch(Dispatchers.Main) {
-                pullRequests.value = result.extractData
+                result.let {
+                    when (it) {
+                        is Result.Success -> {
+                            pullRequests.value = Result.Success(data = it.data)
+                        }
+                        is Result.Error -> {
+                            pullRequests.value = Result.Error(exception = it.exception)
+                        }
+                        else -> {
+                            pullRequests.value = Result.Error(exception = Exception(BaseRepository.SOMETHING_WENT_WRONG))
+                        }
+                    }
+                }
                 _loading.value = false
             }
         }

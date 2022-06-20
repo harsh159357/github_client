@@ -13,7 +13,7 @@ import java.io.IOException
 class TokenInterceptor : Interceptor {
 
     companion object {
-        const val personalAccessToken = "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"
+        const val personalAccessToken = "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"
     }
 
     @Throws(IOException::class)

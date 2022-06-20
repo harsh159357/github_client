@@ -14,10 +14,7 @@ import com.harsh.githubClient.R
 import com.harsh.githubClient.data.model.Repository
 import com.harsh.githubClient.databinding.ActivityMainBinding
 import com.harsh.githubClient.ui.adapter.ReposAdapter
-import com.harsh.githubClient.util.GitHubClientUtil
-import com.harsh.githubClient.util.hide
-import com.harsh.githubClient.util.show
-import com.harsh.githubClient.util.toast
+import com.harsh.githubClient.util.*
 import com.harsh.githubClient.viewmodel.ReposViewModel
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -50,15 +47,24 @@ class MainActivity : AppCompatActivity(), ReposAdapter.RepoListener {
             adapter = gridAdapter
 
             repos.layoutManager = GridLayoutManager(this@MainActivity, 1)
-            reposViewModel.repos.observe(this@MainActivity) {
-                it.let {
-                    gridAdapter.updateRepos(it)
-                    if (it.isEmpty()) {
+            reposViewModel.repos.observe(this@MainActivity) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        gridAdapter.updateRepos(result.data)
+                        if (result.data.isEmpty()) {
+                            binding.repos.hide()
+                            binding.llNoItems.show()
+                        } else {
+                            binding.repos.show()
+                            binding.llNoItems.hide()
+                        }
+                    }
+                    is Result.Error -> {
+                        result.exception.message?.toast(this@MainActivity)
                         binding.repos.hide()
                         binding.llNoItems.show()
-                    } else {
-                        binding.repos.show()
-                        binding.llNoItems.hide()
+                    }
+                    else -> {
                     }
                 }
             }

@@ -10,10 +10,7 @@ import com.harsh.githubClient.R
 import com.harsh.githubClient.data.model.PullRequest
 import com.harsh.githubClient.databinding.ActivityPullRequestsBinding
 import com.harsh.githubClient.ui.adapter.PullRequestsAdapter
-import com.harsh.githubClient.util.GitHubClientUtil
-import com.harsh.githubClient.util.hide
-import com.harsh.githubClient.util.show
-import com.harsh.githubClient.util.toast
+import com.harsh.githubClient.util.*
 import com.harsh.githubClient.viewmodel.PullRequestViewModel
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -46,15 +43,24 @@ class PullRequestActivity : AppCompatActivity(), PullRequestsAdapter.PRListener 
             adapter = gridAdapter
 
             pullRequests.layoutManager = GridLayoutManager(this@PullRequestActivity, 1)
-            pullRequestViewModel.pullRequests.observe(this@PullRequestActivity) {
-                it.let {
-                    gridAdapter.updateRepos(it)
-                    if (it.isEmpty()) {
+            pullRequestViewModel.pullRequests.observe(this@PullRequestActivity) { result ->
+                when (result) {
+                    is Result.Success -> {
+                        gridAdapter.updateRepos(result.data)
+                        if (result.data.isEmpty()) {
+                            binding.pullRequests.hide()
+                            binding.llNoItems.show()
+                        } else {
+                            binding.pullRequests.show()
+                            binding.llNoItems.hide()
+                        }
+                    }
+                    is Result.Error -> {
+                        result.exception.message?.toast(this@PullRequestActivity)
                         binding.pullRequests.hide()
                         binding.llNoItems.show()
-                    } else {
-                        binding.pullRequests.show()
-                        binding.llNoItems.hide()
+                    }
+                    else -> {
                     }
                 }
             }
