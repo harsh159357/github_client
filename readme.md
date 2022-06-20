@@ -4,7 +4,7 @@
 
 ### [App in Action](https://drive.google.com/file/d/1x1Ko2SMGBnujkWdFEjJQ3m8NGNveYoBy/view?usp=sharing)
 
-##Features implemented
+## Features implemented
 * Splash Screen with Animations
 * Loading of My Personal Repos
 * Search Functionality to Search Any Repo on Github
@@ -23,8 +23,11 @@
 * [Generate Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
 
 ## Assignment By
+
 # [Harsh Sharma](http://harsh159357.github.io/)
+
 Senior Android Developer
-[StackOverFlow](http://bit.ly/stackharsh)
-[LinkedIn](http://bit.ly/lnkdharsh)
-[Github](http://bit.ly/githarsh)
+
+<a href="http://bit.ly/stackharsh"><img src="https://github.com/aritraroy/social-icons/blob/master/stackoverflow-icon.png?raw=true" width="60"></a>
+<a href="http://bit.ly/lnkdharsh"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a>
+<a href="http://bit.ly/harshfb"><img src="https://github.com/aritraroy/social-icons/blob/master/facebook-icon.png?raw=true" width="60"></a>
